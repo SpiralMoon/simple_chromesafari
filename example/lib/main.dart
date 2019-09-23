@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:simple_chromesafari/simple_chromesafari.dart';
 
 void main() => runApp(MyApp());
@@ -12,7 +11,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+
+  final String url = 'https://github.com';
 
   @override
   void initState() {
@@ -23,13 +23,30 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
-      ),
+          appBar: AppBar(
+            title: const Text('Browser open & close example'),
+          ),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () async {
+                    SimpleChromesafari.open(url);
+                  },
+                  child: Text('Open browser'),
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    SimpleChromesafari.open(url);
+                    await Future.delayed(Duration(seconds: 7));
+                    SimpleChromesafari.close();
+                  },
+                  child: Text('Open browser and close after 7 seconds'),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }

@@ -14,6 +14,15 @@ class SimpleChromesafari {
    * iOS : show SFSafariViewController.
    */
   static Future<void> open(String url) async {
+
+    if (url == null) {
+      throw ArgumentError('url is require.');
+    }
+
+    if (url.isEmpty) {
+      throw ArgumentError('url must be not empty.');
+    }
+
     await _channel.invokeMethod('openBrowser', {'url': url});
   }
 
