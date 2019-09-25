@@ -1,14 +1,53 @@
 # simple_chromesafari
 
-A simple browser controller for Flutter.
+A simple in app browser controller for Flutter mobile application.
 
-## Getting Started
+## What can I do?
+You can control in app browser simply.
+Support a browser **open** and **close**.
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+## When do I use it?
+- when you want to open browser on your flutter app.
+- when you using **oauth** or **deep link** in your flutter app.
+- when you want to use closeable browser.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## SimpleChromesafari
+SimpleChromesafari class providing **open** function and **close** function.
+
+```simple_chromesafari.dart
+
+  static Future<void> open(String url) async { // 'url' is require.
+
+    ...
+    await _channel.invokeMethod('openBrowser', {'url': url});
+  }
+
+  
+  static Future<void> close() async {
+    await _channel.invokeMethod('closeBrowser');
+  }
+```
+- open(String url) : open browser with target url. **url** is require. if url is `null` or ``(empty string) then throw `ArgumentError`.
+- close( ) : close browser. can be used even when the browser is not in operation.
+
+```your source file...
+
+    ...
+    
+    String url = 'https://flutter.io';
+    await SimpleChromesafari.open(url);
+    
+    ...
+    
+    await SimpleChromesafari.close();
+    
+    ...
+```
+
+### Android
+Using chrome custom tabs.
+
+### iOS
+target : **>= iOS 9.0**
+Using SFSafariViewController.
+
