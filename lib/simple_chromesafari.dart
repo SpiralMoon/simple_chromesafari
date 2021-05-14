@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+export 'package:simple_chromesafari/simple_chromesafari.dart';
+
 // Browser controller. support only 'open' and 'close'.
 class SimpleChromesafari {
   static const MethodChannel _channel =
