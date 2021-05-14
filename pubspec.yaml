@@ -1,7 +1,7 @@
 name: simple_chromesafari
 description: A simple browser controller for Flutter.
 version: 0.0.1
-author:
+author: SpiralMoon<dev.spiralmoon@gmail.com>
 homepage:
 
 environment:
