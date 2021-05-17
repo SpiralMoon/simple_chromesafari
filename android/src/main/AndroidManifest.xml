@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="dev.spiralmoon.simple_chromesafari">
+    package="dev.spiralmoon.simple_chromesafari">
 
     <application>
-        <activity
-            android:name=".BrowserActivity"
-            android:theme="@style/Theme.Transparent " />
+        <receiver
+            android:name=".CustomTabsReceiver"
+            android:enabled="true" />
     </application>
 </manifest>
