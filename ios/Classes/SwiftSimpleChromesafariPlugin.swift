@@ -23,6 +23,8 @@ public class SwiftSimpleChromesafariPlugin: NSObject, FlutterPlugin {
             let sfViewController = SFSafariViewController(url:nsUrl!);
             
             uiController.present(sfViewController, animated: true, completion: nil);
+            
+            result(nil);
         }
         // close safari browser.
         else if (call.method == "closeBrowser") {
@@ -31,6 +33,8 @@ public class SwiftSimpleChromesafariPlugin: NSObject, FlutterPlugin {
             let controller = window?.rootViewController;
             
             controller?.dismiss(animated: true, completion: nil);
+            
+            result(nil);
         }
     }
     
