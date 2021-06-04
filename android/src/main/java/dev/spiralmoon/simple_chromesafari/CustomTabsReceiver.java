@@ -9,7 +9,7 @@ public class CustomTabsReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent i = new Intent(context, SimpleChromesafariPlugin.class);
+        Intent i = new Intent(context, SimpleChromesafariPlugin.activity.getClass());
 
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

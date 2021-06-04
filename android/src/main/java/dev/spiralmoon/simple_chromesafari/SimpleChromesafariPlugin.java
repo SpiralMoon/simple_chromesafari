@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -19,14 +21,15 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /**
  * SimpleChromesafariPlugin
  */
-public class SimpleChromesafariPlugin implements FlutterPlugin, MethodCallHandler {
+public class SimpleChromesafariPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
     /**
      * Plugin registration.
      */
 
     private MethodChannel methodChannel;
-    private PendingIntent pendingIntent;
+    private static PendingIntent pendingIntent;
     private Context context;
+    public static Activity activity;
 
     @Override
     public void onMethodCall(MethodCall call, Result result) {
@@ -34,15 +37,15 @@ public class SimpleChromesafariPlugin implements FlutterPlugin, MethodCallHandle
         // open chrome custom tabs.
         if (call.method.equals("openBrowser")) {
             Uri uri = Uri.parse(call.argument("url").toString());
-            Intent intent = new Intent(context, CustomTabsReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+            Intent intent = new Intent(activity, CustomTabsReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, 0);
 
-            this.pendingIntent = pendingIntent;
+            SimpleChromesafariPlugin.pendingIntent = pendingIntent;
 
             CustomTabsIntent.Builder customTabsBuilder = new CustomTabsIntent.Builder();
             CustomTabsIntent customTabsIntent = customTabsBuilder.build();
             customTabsIntent.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            customTabsIntent.launchUrl(context, uri);
+            customTabsIntent.launchUrl(activity, uri);
 
             result.success(null);
         }
@@ -74,5 +77,25 @@ public class SimpleChromesafariPlugin implements FlutterPlugin, MethodCallHandle
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         methodChannel.setMethodCallHandler(null);
+    }
+
+    @Override
+    public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+        activity = binding.getActivity();
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+        activity = null;
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+        activity = binding.getActivity();
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+        activity = null;
     }
 }
