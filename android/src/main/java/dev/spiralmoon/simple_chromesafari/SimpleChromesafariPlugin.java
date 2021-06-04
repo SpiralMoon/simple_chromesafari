@@ -2,11 +2,16 @@ package dev.spiralmoon.simple_chromesafari;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -16,25 +21,15 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /**
  * SimpleChromesafariPlugin
  */
-public class SimpleChromesafariPlugin implements MethodCallHandler {
+public class SimpleChromesafariPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
     /**
      * Plugin registration.
      */
 
-    private final MethodChannel methodChannel;
+    private MethodChannel methodChannel;
+    private static PendingIntent pendingIntent;
+    private Context context;
     public static Activity activity;
-    public static PendingIntent pendingIntent;
-
-    private SimpleChromesafariPlugin(Activity activity, MethodChannel methodChannel) {
-        System.out.println(activity.getLocalClassName());
-        SimpleChromesafariPlugin.activity = activity;
-        this.methodChannel = methodChannel;
-    }
-
-    public static void registerWith(Registrar registrar) {
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), "simple_chromesafari");
-        channel.setMethodCallHandler(new SimpleChromesafariPlugin(registrar.activity(), channel));
-    }
 
     @Override
     public void onMethodCall(MethodCall call, Result result) {
@@ -70,5 +65,37 @@ public class SimpleChromesafariPlugin implements MethodCallHandler {
         } else {
             result.notImplemented();
         }
+    }
+
+    @Override
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+        methodChannel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "simple_chromesafari");
+        methodChannel.setMethodCallHandler(this);
+        this.context = flutterPluginBinding.getApplicationContext();
+    }
+
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+        methodChannel.setMethodCallHandler(null);
+    }
+
+    @Override
+    public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+        activity = binding.getActivity();
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+        activity = null;
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+        activity = binding.getActivity();
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+        activity = null;
     }
 }

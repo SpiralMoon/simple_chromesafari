@@ -5,5 +5,8 @@
         <receiver
             android:name=".CustomTabsReceiver"
             android:enabled="true" />
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
     </application>
 </manifest>

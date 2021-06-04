@@ -15,7 +15,7 @@ class SimpleChromesafari {
    * Android : show chrome custom tabs.
    * iOS : show SFSafariViewController.
    */
-  static Future<void> open(String url) async {
+  static Future<void> open(String? url) async {
 
     if (url == null) {
       throw ArgumentError('url is require.');
