@@ -4,7 +4,7 @@ version '1.0'
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -15,14 +15,14 @@ buildscript {
 rootProject.allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 16
@@ -34,6 +34,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:customtabs:29.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:+'
+    implementation 'com.android.support:customtabs:31.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 }

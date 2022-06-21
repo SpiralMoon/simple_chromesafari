@@ -38,7 +38,12 @@ public class SimpleChromesafariPlugin implements FlutterPlugin, MethodCallHandle
         if (call.method.equals("openBrowser")) {
             Uri uri = Uri.parse(call.argument("url").toString());
             Intent intent = new Intent(activity, CustomTabsReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, 0);
+            PendingIntent pendingIntent = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+            } else {
+                pendingIntent = PendingIntent.getBroadcast(activity, 0, intent, 0);
+            }
 
             SimpleChromesafariPlugin.pendingIntent = pendingIntent;
 
